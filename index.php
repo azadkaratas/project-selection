@@ -1,14 +1,4 @@
-﻿<?php
-$servername = "";
-$username = "";
-$password = "";
-$dbname="";
-
-$conn = new mysqli($servername, $username, $password,$dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}  ?>
+﻿<?php include 'DBConnection.php';  ?>
 <html>
 	<head>
 	<link rel="stylesheet" type="text/css" href="mystyle.css" media="all" />
@@ -20,8 +10,10 @@ if ($conn->connect_error) {
 	<script>
             function isValid(frm)
             {
+				var chosen = frm.selectedProject.value;
 
 
+                if ( chosen==0 )
                 {
                     alert("Choose a project.");
                     return false;
@@ -54,8 +46,8 @@ if ($conn->connect_error) {
 
 <?php
 
-$bilgiler = "SELECT `projectName`,`projectID`,`isEmpty`,`projectCapacity` FROM `projectesTable` ORDER BY `projectID` ";
-if ($result = $conn->query($bilgiler)) {
+$sqlInfo = "SELECT `projectName`,`projectID`,`isEmpty`,`projectCapacity` FROM `projectsTable` ORDER BY `projectID` ";
+if ($result = $conn->query($sqlInfo)) {
 
     /* fetch object array */
     while ($roww = $result->fetch_row()) {
@@ -64,7 +56,7 @@ if ($result = $conn->query($bilgiler)) {
 		<td width="30">
 		<p align="center"><?php echo $roww[1];?></td>
 		<td width="44">
-		<p align="center"><?php if ($roww[2]=="Bos") echo "Empty"; else echo '<span style="color:#f00;text-align:center;">Full</span>';?></td>
+		<p align="center"><?php if ($roww[2]=="empty") echo "Empty"; else echo '<span style="color:#f00;text-align:center;">Full</span>';?></td>
 		<td width="100">
 		<p align="center"><?php echo $roww[3];?> People</td>
 		<td width="500">
